@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/riptide/static/css/main.d73bbc36.css",
+    "main.js": "/riptide/static/js/main.d0ba14a8.js",
+    "static/js/453.5eb93848.chunk.js": "/riptide/static/js/453.5eb93848.chunk.js",
+    "index.html": "/riptide/index.html",
+    "main.d73bbc36.css.map": "/riptide/static/css/main.d73bbc36.css.map",
+    "main.d0ba14a8.js.map": "/riptide/static/js/main.d0ba14a8.js.map",
+    "453.5eb93848.chunk.js.map": "/riptide/static/js/453.5eb93848.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d73bbc36.css",
+    "static/js/main.d0ba14a8.js"
+  ]
+}

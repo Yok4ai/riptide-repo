@@ -1,0 +1,52 @@
+.App {
+  position: relative; /* Ensure relative positioning for z-index to work */
+  text-align: center; /* Center align text content */
+  min-height: 100vh; /* Ensure full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  color: aliceblue;
+  font-family: 'Creepster', cursive, bold;
+  font-size: 30px;
+  font-weight: bold;
+  /* font-style: italic; */
+
+  
+}
+
+.App h1 {
+  position: relative; /* Ensure it respects z-index stacking */
+  z-index: 10; /* Place h1 above other content */
+}
+
+.download-container {
+  margin-top: 30px;
+  position: relative; /* Ensure relative positioning for z-index to work */
+  z-index: 1; /* Ensure the download box is behind h1 */
+}
+
+/* Styles for the download input and button can be adjusted here */
+.download-container input {
+  padding: 8px;
+  margin-right: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+  max-width: 100%;
+}
+
+.download-container button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #780283;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download-container button:hover {
+  background-color: #7a00b3;
+}
