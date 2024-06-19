@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const ytdl = require('ytdl-core');
+const { ytDownload } = require('yt-dlp');
 const ffmpeg = require('fluent-ffmpeg');
 
 const app = express();
@@ -14,13 +14,13 @@ app.use(express.json());
 // Function to fetch video information from YouTube
 const getVideoInfo = async (url) => {
     try {
-        const info = await ytdl.getInfo(url);
+        const info = await ytDownload(url, ['-j']);
         return {
-            title: info.videoDetails.title,
-            author: info.videoDetails.author.name,
-            length: info.videoDetails.lengthSeconds,
-            views: info.videoDetails.viewCount,
-            description: info.videoDetails.description
+            title: info.title,
+            author: info.uploader,
+            length: info.duration,
+            views: info.view_count,
+            description: info.description
         };
     } catch (error) {
         throw new Error('Failed to fetch video information');
@@ -29,26 +29,11 @@ const getVideoInfo = async (url) => {
 
 // Function to download video and audio streams from YouTube
 const downloadVideo = async (url) => {
-    const videoReadableStream = ytdl(url, { filter: 'videoandaudio', quality: 'highestvideo' });
-    const audioReadableStream = ytdl(url, { filter: 'audioonly', quality: 'highestaudio' });
-
     const videoFile = 'video_only.mp4';
     const audioFile = 'audio_only.mp4';
 
-    const videoWriteStream = fs.createWriteStream(videoFile);
-    const audioWriteStream = fs.createWriteStream(audioFile);
-
-    videoReadableStream.pipe(videoWriteStream);
-    audioReadableStream.pipe(audioWriteStream);
-
-    await new Promise((resolve, reject) => {
-        videoWriteStream.on('finish', () => {
-            audioWriteStream.end();
-            resolve();
-        });
-        videoWriteStream.on('error', reject);
-        audioWriteStream.on('error', reject);
-    });
+    await ytDownload(url, ['-f', 'bestvideo[ext=mp4]', '-o', videoFile]);
+    await ytDownload(url, ['-f', 'bestaudio[ext=mp4]', '-o', audioFile]);
 
     return { videoFile, audioFile };
 };
