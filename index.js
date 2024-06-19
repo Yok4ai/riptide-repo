@@ -73,16 +73,38 @@ app.post('/download', async (req, res) => {
         res.download(outputFile, `${info.title}.mp4`, (err) => {
             if (err) {
                 console.error(err);
+                res.status(500).json({ error: 'File download failed' });
             }
             fs.unlinkSync(outputFile); // Remove the output file after sending
         });
     } catch (e) {
+        console.error(e);
         res.status(500).json({ error: e.message });
     }
 });
 
-const PORT = process.env.PORT || 10000;
+// Endpoint to manually test with a YouTube link
+app.get('/test-download', async (req, res) => {
+    const { url } = req.query; // Assuming you'll pass the YouTube URL as a query parameter
+    try {
+        const info = await getVideoInfo(url);
+        const { videoFile, audioFile } = await downloadVideo(url);
+        const outputFile = 'test_output.mp4';
+
+        await mergeVideoAudio(videoFile, audioFile, outputFile);
+
+        // Remove intermediate files
+        fs.unlinkSync(videoFile);
+        fs.unlinkSync(audioFile);
+
+        res.status(200).json({ message: 'Download and merge successful', info, outputFile });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
