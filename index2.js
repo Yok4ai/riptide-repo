@@ -89,7 +89,10 @@ app.post('/download', (req, res) => {
     console.log(`yt-dlp executable path: ${ytDlpPath}`);
     console.log(`Output path: ${outputPath}`);
 
-    execFile(ytDlpPath, [url, '-o', outputPath, '-f', 'mp4'], (error, stdout, stderr) => {
+    execFile(ytDlpPath, [url, '-o', outputPath, '-f', 'mp4', '--user-agent',
+         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'],
+          (error, stdout, stderr) => {
+            
         if (error) {
             console.error(`Error during execFile: ${error.message}`);
             console.error(`Stderr output: ${stderr}`);
