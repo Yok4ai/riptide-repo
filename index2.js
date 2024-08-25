@@ -7,6 +7,7 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
+
 app.use(cors());
 app.use(express.json());
 
@@ -19,10 +20,11 @@ app.post('/download', (req, res) => {
 
     const ytDlpPath = path.join(__dirname, 'yt-dlp');
     const outputPath = path.join(__dirname, 'downloads', '%(title)s.%(ext)s');
-    
+    const cookiesPath = path.join(__dirname, 'cookies.txt');  // Path to your cookies file
+
     console.log('Starting download...');
 
-    execFile(ytDlpPath, [url, '-o', outputPath, '-f', 'mp4'], (error, stdout, stderr) => {
+    execFile(ytDlpPath, [url, '-o', outputPath, '-f', 'mp4', '--cookies', cookiesPath], (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return res.status(500).send('Error downloading video');
@@ -33,7 +35,6 @@ app.post('/download', (req, res) => {
 
         console.log('Download complete. Processing file...');
 
-        // Parse stdout to find the exact output file name
         const regex = /Destination: (.+)/;
         const match = stdout.match(regex);
         if (!match) {
@@ -47,7 +48,6 @@ app.post('/download', (req, res) => {
             if (err) {
                 console.error(`Error sending file: ${err.message}`);
             }
-            // Optional: Clean up the downloaded file after sending it
             fs.unlink(outputFile, (unlinkErr) => {
                 if (unlinkErr) {
                     console.error(`Error deleting file: ${unlinkErr.message}`);
@@ -56,6 +56,7 @@ app.post('/download', (req, res) => {
         });
     });
 });
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
