@@ -24,7 +24,7 @@ app.post('/download', (req, res) => {
 
     console.log('Starting download...');
 
-    execFile(ytDlpPath, [url, '-o', outputPath, '-f', 'mp4', '--cookies', cookiesPath], (error, stdout, stderr) => {
+    execFile(ytDlpPath, [url, '-o', outputPath, '-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'], (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return res.status(500).send('Error downloading video');
