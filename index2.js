@@ -20,7 +20,6 @@ app.post('/download', (req, res) => {
 
     const ytDlpPath = path.join(__dirname, 'yt-dlp');
     const outputPath = path.join(__dirname, 'downloads', '%(title)s.%(ext)s');
-    const cookiesPath = path.join(__dirname, 'cookies.txt');  // Path to your cookies file
 
     console.log('Starting download...');
 
