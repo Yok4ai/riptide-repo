@@ -17,7 +17,7 @@ app.post('/download', (req, res) => {
         return res.status(400).send('URL is required');
     }
 
-    const ytDlpPath = path.join(__dirname, 'yt-dlp');
+    const ytDlpPath = path.join(__dirname, 'yt-dlp_linux');
     const outputPath = path.join(__dirname, 'downloads', '%(title)s.%(ext)s');
     
     console.log('Starting download...');
