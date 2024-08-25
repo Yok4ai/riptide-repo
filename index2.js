@@ -82,8 +82,12 @@ app.post('/download', (req, res) => {
         return res.status(400).send('URL is required');
     }
 
-    // Replace 'https://youtube.com' and 'https://www.youtube.com' with 'https://yewtu.be'
-    url = url.replace(/^https:\/\/(www\.)?youtube\.com/, 'https://yewtu.be');
+
+    // Replace 'https://youtube.com' and 'https://www.youtube.com' with 'https://yewtu.be' while preserving the rest of the URL
+    const youtubeUrlPattern = /^https:\/\/(www\.)?youtube\.com(\/.*)?$/;
+    if (youtubeUrlPattern.test(url)) {
+        url = url.replace(/^https:\/\/(www\.)?youtube\.com/, 'https://yewtu.be');
+    }
 
     const ytDlpPath = path.join(__dirname, 'yt-dlp_linux');
     const outputPath = path.join(__dirname, 'downloads', '%(title)s.%(ext)s');
