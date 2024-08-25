@@ -75,7 +75,8 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/download', (req, res) => {
-    const { url } = req.body;
+    // const { url } = req.body;
+    let { url } = req.body;
 
     if (!url) {
         console.error('Error: No URL provided in the request');
@@ -83,12 +84,10 @@ app.post('/download', (req, res) => {
     }
 
 
-    // Replace 'https://youtube.com' and 'https://www.youtube.com' with 'https://yewtu.be' while preserving the rest of the URL
-    const youtubeUrlPattern = /^https:\/\/(www\.)?youtube\.com(\/.*)?$/;
-    if (youtubeUrlPattern.test(url)) {
-        url = url.replace(/^https:\/\/(www\.)?youtube\.com/, 'https://yewtu.be');
-    }
-
+   // Check if URL is from YouTube and replace it
+   if (url.includes('youtube.com')) {
+    url = url.replace('youtube.com', 'yewtu.be');
+}
     const ytDlpPath = path.join(__dirname, 'yt-dlp_linux');
     const outputPath = path.join(__dirname, 'downloads', '%(title)s.%(ext)s');
 
